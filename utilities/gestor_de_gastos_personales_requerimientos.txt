@@ -1,0 +1,19 @@
+Proyecto: Gestor de Gastos Personales
+
+Fase 1. Requerimientos y Planificación ión MVP (Mínimo Producto Viable)
+Requerimientos Funcionales:
+1. Formulario de Ingreso: Un campo para el nombre del gasto y otro para la cantidad (monto).
+2. Lista de Gastos: Un lugar donde se vean los registros agregados.
+3. Balance Total: Un encabezado que se actualice automáticamente sumando todos los gastos.
+4. Acción de Eliminar: Poder quitar un gasto de la lista.
+5. Persistencia: Que al cerrar el navegador y volver a abrirlo, los gastos sigan ahí.
+
+
+Fase 2. Estructura de Datos:
+Cada gasto es un Objeto que necesita varias propiedades. Para este proyecto manejaremos un Arreglo de Objetos con esta estructura lógica:
+- id: Unidentificador único (para saber qué gasto borrar).
+- nombre: El concepto del gasto (ej: "Comida").
+- cantidad: El valor numérico.
+
+=== Funcionalidades Futuras ===
+

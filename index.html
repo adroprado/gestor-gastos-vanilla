@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestor de Gastos Personales</title>
+  </head>
+  <body>
+    <header>
+      <div>
+        <img src="assets/hero_image_finanzas.png" alt="HeroeImage" />
+      </div>
+      <h1>Gestor de Gastos Personales</h1>
+      <a href="">
+        <!--Agregar enlace del proyecto (repositorio en Git&Hub)-->
+        <img src="assets/github.svg" alt="Git&Hub" />
+      </a>
+    </header>
+    <main>
+      <form autocomplete="off">
+        <input type="text" placeholder="Nombre de gasto" />
+        <input type="text" placeholder="Monto $" />
+        <input type="submit" value="Agregar" />
+        <input type="hidden" name="id" />
+        <!--Esta etiqueta dependiendo del valor, "Agregammos" o "Editamos" -->
+      </form>
+
+      <section>
+        <h2>Lista de Gastos:</h2>
+        <h3>
+          Total: $
+          <div>
+            <!-- Agregar el ponderado con JS -->
+          </div>
+        </h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Monto</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Agregar el template con JS -->
+          </tbody>
+        </table>
+
+        <template>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <input type="button" value="Edit" />
+            </td>
+            <td>
+              <input type="button" value="Delete" />
+            </td>
+          </tr>
+        </template>
+      </section>
+    </main>
+  </body>
+</html>
