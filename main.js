@@ -1,7 +1,32 @@
-const $form = document.querySelector(".form"),
-  $table = document.querySelector(".table"),
-  $total = document.querySelector(".total-amount"),
-  $template = document.querySelector(".template").content,
-  $fragment = document.createDocumentFragment();
+const d = document,
+  $form = d.querySelector(".form"),
+  $table = d.querySelector(".tabla"),
+  $total = d.querySelector(".monto-total"),
+  $template = d.querySelector(".plantilla").content,
+  $fragment = d.createDocumentFragment();
 
-console.log($form, $table, $total, $template, $fragment);
+const ls = localStorage;
+let baseDeDatosInicial = [];
+
+const crearGasto = () => {
+  const informacionDelUsuario = {
+    id: Date.now(),
+    nombre: $form.querySelector(".nombre").value,
+    cantidad: $form.querySelector(".monto").value,
+  };
+
+  const nuevoGasto = [...baseDeDatosInicial, informacionDelUsuario];
+  baseDeDatosInicial = nuevoGasto;
+
+  $form.reset();
+  console.log(nuevoGasto);
+};
+
+d.addEventListener("submit", (e) => {
+  if (e.target === $form) {
+    e.preventDefault();
+
+    crearGasto();
+  }
+});
+console.log(baseDeDatosInicial);
