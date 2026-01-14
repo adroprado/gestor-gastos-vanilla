@@ -1,3 +1,4 @@
+// Variables que referencían elementos del DOM
 const d = document,
   $form = d.querySelector(".form"),
   $table = d.querySelector(".tabla"),
@@ -5,9 +6,11 @@ const d = document,
   $template = d.querySelector(".plantilla").content,
   $fragment = d.createDocumentFragment();
 
+// Variables globales
 const ls = localStorage;
 let baseDeDatosInicial = [];
 
+// Arrow function (función expresada): almacena elementos en la DB. Y limpia formulario
 const crearGasto = () => {
   const informacionDelUsuario = {
     id: Date.now(),
@@ -19,14 +22,24 @@ const crearGasto = () => {
   baseDeDatosInicial = nuevoGasto;
 
   $form.reset();
-  console.log(nuevoGasto);
+  console.log(baseDeDatosInicial);
 };
 
+// Arrow function: manejo de persistencia de datos en localStorage
+const gastosSetItemLS = () =>
+  ls.setItem("gastos", JSON.stringify(baseDeDatosInicial));
+
+// Arrow function: extracción de datos del localStorage
+const gastosGetItemLS = () => JSON.parse(ls.getItem("gastos"));
+
+gastosGetItemLS();
+
+// Manejo de delegación de eventos
 d.addEventListener("submit", (e) => {
   if (e.target === $form) {
     e.preventDefault();
 
     crearGasto();
+    gastosSetItemLS();
   }
 });
-console.log(baseDeDatosInicial);
