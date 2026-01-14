@@ -8,7 +8,7 @@
   <body>
     <header>
       <h1>Gestor de Gastos Personales</h1>
-      <a href="">
+      <a href="" target="_blank">
         <!--Agregar enlace del proyecto (repositorio en Git&Hub)-->
         <img src="assets/github.svg" alt="Git&Hub" />
       </a>
@@ -16,21 +16,21 @@
 
     <main>
       <form class="form" autocomplete="off">
-        <input class="name" type="text" placeholder="Nombre de gasto" />
-        <input class="amount" type="text" placeholder="Monto $" />
-        <input type="submit" value="Agregar" />
+        <input class="nombre" type="text" placeholder="Nombre de gasto" />
+        <input class="monto" type="text" placeholder="Monto $" />
+        <input class="agregar" type="submit" value="Agregar" />
         <input type="hidden" name="id" />
         <!--Esta etiqueta dependiendo del valor, "Agregammos" o "Editamos" -->
       </form>
 
-      <table class="table">
+      <table class="tabla">
         <thead>
           <tr>
-            <th colspan="3">
+            <th colspan="4">
               <h2>Lista de Gastos</h2>
-              <h3 class="total-amount">
+              <h3 class="monto-total">
                 <!-- Agregar monto total de los gastos con JS -->
-                Total:$ 9,785.53
+                Total:$ 9,785.5
               </h3>
             </th>
           </tr>
@@ -45,18 +45,19 @@
         </tbody>
       </table>
 
-      <template class="template">
-        <tr class="expense">
-          <td class="name"></td>
-          <td class="amount"></td>
+      <template class="plantilla">
+        <tr>
+          <td class="nombre"></td>
+          <td class="monto"></td>
           <td>
-            <input class="btn-edit" type="button" value="Edit" />
+            <input class="btn-editar" type="button" value="Editar" />
           </td>
           <td>
-            <input class="btn-delete" type="button" value="Delete" />
+            <input class="btn-eliminar" type="button" value="Eliminar" />
           </td>
         </tr>
       </template>
     </main>
+    <script src="main.js"></script>
   </body>
 </html>
