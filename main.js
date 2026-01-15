@@ -37,8 +37,9 @@ const gastosGet = () => {
 gastosGet();
 
 // Arrow function: lectura de DB y agregando elementos al DOM
-const leerGastos = () => {
-  baseDeDatosInicial.forEach((el) => {
+const leerGastos = (baseDeDatos) => {
+  console.log(baseDeDatos);
+  baseDeDatos.forEach((el) => {
     let $clon = d.importNode($plantilla, true);
     $clon.querySelector(".nombre").textContent = el.nombre;
     $clon.querySelector(".monto").textContent = el.cantidad;
@@ -49,7 +50,10 @@ const leerGastos = () => {
   $tabla.querySelector("tbody").appendChild($fragmento);
 };
 
-d.addEventListener("DOMContentLoaded", leerGastos);
+d.addEventListener("DOMContentLoaded", () => {
+  leerGastos(baseDeDatosInicial);
+});
+
 // Manejo de delegación de eventos
 d.addEventListener("submit", (e) => {
   if (e.target === $form) {
