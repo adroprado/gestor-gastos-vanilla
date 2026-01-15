@@ -1,10 +1,10 @@
 // Variables que referencían elementos del DOM
 const d = document,
   $form = d.querySelector(".form"),
-  $table = d.querySelector(".tabla"),
+  $tabla = d.querySelector(".tabla"),
   $total = d.querySelector(".monto-total"),
-  $template = d.querySelector(".plantilla").content,
-  $fragment = d.createDocumentFragment();
+  $plantilla = d.querySelector(".plantilla").content,
+  $fragmento = d.createDocumentFragment();
 
 // Variables globales
 const ls = localStorage;
