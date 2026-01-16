@@ -69,6 +69,19 @@ const editarGasto = (e) => {
   }
 };
 
+const eliminarGasto = (e) => {
+  const ID = e.target.dataset.id;
+  if (e.target.matches(".btn-eliminar")) {
+    baseDeDatosInicial = baseDeDatosInicial.filter((el) => {
+      if (el.id !== Number(ID)) {
+        return el;
+      }
+    });
+    gastosSet();
+    leerGastos();
+  }
+};
+
 d.addEventListener("DOMContentLoaded", leerGastos);
 
 // Manejo de delegación de eventos
@@ -99,4 +112,5 @@ $form.addEventListener("submit", (e) => {
 
 d.addEventListener("click", (e) => {
   editarGasto(e);
+  eliminarGasto(e);
 });
