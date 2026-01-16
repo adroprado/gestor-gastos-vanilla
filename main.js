@@ -37,8 +37,9 @@ const gastosGet = () => {
 gastosGet();
 
 // Arrow function: lectura de DB y agregando elementos al DOM
-const leerGastos = (baseDeDatos) => {
-  baseDeDatos.forEach((el) => {
+const leerGastos = () => {
+  $tabla.querySelector("tbody").innerHTML = "";
+  baseDeDatosInicial.forEach((el) => {
     let $clon = d.importNode($plantilla, true);
     $clon.querySelector(".nombre").textContent = el.nombre;
     $clon.querySelector(".monto").textContent = el.cantidad;
@@ -56,11 +57,8 @@ const editarGasto = (e) => {
 
     // Obteniendo id del dataset que le pasmos al botón "Editar"
     const ID = e.target.dataset.id;
-    console.log(ID);
 
     baseDeDatosInicial.find((el) => {
-      console.log(el.id);
-      console.log(el);
       if (el.id === Number(ID)) {
         // .nombre, .monto, .id. No esta accediendo a la clase, esta obteniendo como referencia el atributo "name", para agregarle el valor
         $form.nombre.value = el.nombre;
@@ -71,16 +69,31 @@ const editarGasto = (e) => {
   }
 };
 
-d.addEventListener("DOMContentLoaded", () => {
-  leerGastos(baseDeDatosInicial);
-});
+d.addEventListener("DOMContentLoaded", leerGastos);
 
 // Manejo de delegación de eventos
-d.addEventListener("submit", (e) => {
-  if (e.target === $form) {
-    e.preventDefault();
+$form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const ID = e.target.elements.id.value;
+
+  if (!ID) {
     crearGasto();
     gastosSet();
+    leerGastos();
+  } else {
+    baseDeDatosInicial = baseDeDatosInicial.map((el) => {
+      if (el.id === Number(ID)) {
+        el.nombre = d.querySelector(".nombre").value;
+        el.cantidad = d.querySelector(".monto").value;
+      }
+      return el;
+    });
+
+    gastosSet();
+    leerGastos();
+    $form.reset();
+    d.querySelector("h2").textContent = "Agregar Gasto";
+    $form.querySelector("input[name='id']").value = "";
   }
 });
 
