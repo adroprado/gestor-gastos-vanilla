@@ -15,9 +15,15 @@
     </header>
 
     <main>
+      <h2>Agregar Gasto</h2>
       <form class="form" autocomplete="off">
-        <input class="nombre" type="text" placeholder="Nombre de gasto" />
-        <input class="monto" type="text" placeholder="Monto $" />
+        <input
+          class="nombre"
+          type="text"
+          name="nombre"
+          placeholder="Nombre de gasto"
+        />
+        <input class="monto" type="text" name="monto" placeholder="Monto $" />
         <input class="agregar" type="submit" value="Agregar" />
         <input type="hidden" name="id" />
         <!--Esta etiqueta dependiendo del valor, "Agregammos" o "Editamos" -->
