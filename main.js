@@ -38,6 +38,7 @@ gastosGet();
 
 // Arrow function: lectura de DB y agregando elementos al DOM
 const leerGastos = () => {
+  // Limpia el contenido actual de la tabla para evitar duplicados
   $tabla.querySelector("tbody").innerHTML = "";
   baseDeDatosInicial.forEach((el) => {
     let $clon = d.importNode($plantilla, true);
@@ -50,6 +51,7 @@ const leerGastos = () => {
 
   $tabla.querySelector("tbody").appendChild($fragmento);
 };
+
 // Arrow function: pase de elementos al formulario con su respectivo id para editar
 const editarGasto = (e) => {
   if (e.target.matches(".btn-editar")) {
@@ -69,6 +71,7 @@ const editarGasto = (e) => {
   }
 };
 
+// Arrow function: elimina un elemento por medio del id
 const eliminarGasto = (e) => {
   const ID = e.target.dataset.id;
   if (e.target.matches(".btn-eliminar")) {
@@ -84,23 +87,27 @@ const eliminarGasto = (e) => {
 
 d.addEventListener("DOMContentLoaded", leerGastos);
 
-// Manejo de delegación de eventos
 $form.addEventListener("submit", (e) => {
   e.preventDefault();
   const ID = e.target.elements.id.value;
 
+  //Si el id oculto no tiene valor, vamos a crearGasto, de lo contrario editarGasto.
   if (!ID) {
     crearGasto();
     gastosSet();
     leerGastos();
   } else {
-    baseDeDatosInicial = baseDeDatosInicial.map((el) => {
-      if (el.id === Number(ID)) {
-        el.nombre = d.querySelector(".nombre").value;
-        el.cantidad = d.querySelector(".monto").value;
-      }
-      return el;
-    });
+    // Inmutabilidad al editar un elemento
+    const elementoAEditar = baseDeDatosInicial.map((el) =>
+      el.id === Number(ID)
+        ? {
+            ...el,
+            nombre: d.querySelector(".nombre").value,
+            cantidad: d.querySelector(".monto").value,
+          }
+        : el
+    );
+    baseDeDatosInicial = elementoAEditar;
 
     gastosSet();
     leerGastos();
