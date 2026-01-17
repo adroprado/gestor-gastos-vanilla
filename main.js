@@ -38,7 +38,7 @@ const gastosGet = () => {
 
 gastosGet();
 
-// Arrow function: lectura de DB y agregando elementos al DOM
+// Arrow function: lectura de DB y agregando elementos al DOM. Y Suma el total de gastos
 const leerGastos = () => {
   // Limpia el contenido actual de la tabla para evitar duplicados
   $tabla.querySelector("tbody").innerHTML = "";
@@ -52,6 +52,16 @@ const leerGastos = () => {
   });
 
   $tabla.querySelector("tbody").appendChild($fragmento);
+
+  // Suma el total de los gastos
+  $total.textContent = "";
+  const totalCalculado = baseDeDatosInicial.reduce((acumulador, el) => {
+    let numero = parseFloat(el.cantidad);
+
+    acumulador += numero;
+    return acumulador;
+  }, 0);
+  $total.textContent = `Total de Gastos: ${formatoNumero.format(totalCalculado)}`;
 };
 
 // Arrow function: pase de elementos al formulario con su respectivo id para editar
@@ -87,19 +97,7 @@ const eliminarGasto = (e) => {
   }
 };
 
-// Suma el total de los gastos
-const totalCalculado = baseDeDatosInicial.reduce((acumulador, el) => {
-  let numero = parseFloat(el.cantidad);
-
-  acumulador += numero;
-  return acumulador;
-}, 0);
-$total.insertAdjacentText(
-  "afterbegin",
-  `Total de Gastos: ${formatoNumero.format(totalCalculado)}`
-);
-
-d.addEventListener("DOMContentLoaded", leerGastos, totalCalculado);
+d.addEventListener("DOMContentLoaded", leerGastos);
 
 $form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -119,7 +117,7 @@ $form.addEventListener("submit", (e) => {
             nombre: d.querySelector(".nombre").value,
             cantidad: d.querySelector(".monto").value,
           }
-        : el
+        : el,
     );
     baseDeDatosInicial = elementoAEditar;
 
