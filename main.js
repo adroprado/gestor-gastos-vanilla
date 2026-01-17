@@ -9,6 +9,8 @@ const d = document,
 // Variables globales
 const ls = localStorage;
 let baseDeDatosInicial = [];
+let opciones = { style: "currency", currency: "MXN" },
+  formatoNumero = new Intl.NumberFormat("es-MX", opciones);
 
 // Arrow function (función expresada): almacena elementos en la DB. Y limpia formulario
 const crearGasto = () => {
@@ -85,7 +87,19 @@ const eliminarGasto = (e) => {
   }
 };
 
-d.addEventListener("DOMContentLoaded", leerGastos);
+// Suma el total de los gastos
+const totalCalculado = baseDeDatosInicial.reduce((acumulador, el) => {
+  let numero = parseFloat(el.cantidad);
+
+  acumulador += numero;
+  return acumulador;
+}, 0);
+$total.insertAdjacentText(
+  "afterbegin",
+  `Total de Gastos: ${formatoNumero.format(totalCalculado)}`
+);
+
+d.addEventListener("DOMContentLoaded", leerGastos, totalCalculado);
 
 $form.addEventListener("submit", (e) => {
   e.preventDefault();
