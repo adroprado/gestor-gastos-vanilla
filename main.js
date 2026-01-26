@@ -1,135 +1,137 @@
-// Variables que referencían elementos del DOM
-const d = document,
-  $form = d.querySelector(".form"),
-  $tabla = d.querySelector(".tabla"),
-  $total = d.querySelector(".monto-total"),
-  $plantilla = d.querySelector(".plantilla").content,
-  $fragmento = d.createDocumentFragment();
+// --- Referencias al DOM ---
+const $formulario = document.querySelector(".formulario-gastos"),
+  $tablaGastos = document.querySelector(".tabla-gastos"),
+  $contenedorTotal = document.querySelector(".total-gastos"),
+  $plantilla = document.querySelector(".plantilla-fila-gastos").content,
+  $fragmento = document.createDocumentFragment();
 
-// Variables globales
+// --- Variables Globales ---
 const ls = localStorage;
-let baseDeDatosInicial = [];
-let opciones = { style: "currency", currency: "MXN" },
-  formatoNumero = new Intl.NumberFormat("es-MX", opciones);
+let listaDeGastos = [];
+let configuracionMoneda = { style: "currency", currency: "MXN" },
+  formateadorMoneda = new Intl.NumberFormat("es-MX", configuracionMoneda);
 
-// Arrow function (función expresada): almacena elementos en la DB. Y limpia formulario
-const crearGasto = () => {
-  const informacionDelUsuario = {
+// --- Funciones de Lógica ---
+
+// Registra un nuevo gasto y limpia el formulario
+const registrarGastoEnMemoria = () => {
+  const nuevoGasto = {
     id: Date.now(),
-    nombre: $form.querySelector(".nombre").value,
-    cantidad: $form.querySelector(".monto").value,
+    nombre: $formulario.querySelector(".nombre").value,
+    cantidad: $formulario.querySelector(".monto").value,
   };
 
-  const nuevoGasto = [...baseDeDatosInicial, informacionDelUsuario];
-  baseDeDatosInicial = nuevoGasto;
-
-  $form.reset();
+  listaDeGastos = [...listaDeGastos, nuevoGasto];
+  $formulario.reset();
 };
 
-// Arrow function: manejo de persistencia de datos en localStorage
-const gastosSet = () =>
-  ls.setItem("gastos", JSON.stringify(baseDeDatosInicial));
+// Guarda la lista actual en el almacenamiento del navegador
+const guardarGastosEnLocal = () =>
+  ls.setItem("gastos", JSON.stringify(listaDeGastos));
 
-// Arrow function: extracción de datos del localStorage
-const gastosGet = () => {
-  let datosDeLS = JSON.parse(ls.getItem("gastos"));
-  baseDeDatosInicial = datosDeLS || [];
+// Recupera los datos guardados al cargar la página
+const cargarGastosEnLocal = () => {
+  let datosRecuperados = JSON.parse(ls.getItem("gastos"));
+  listaDeGastos = datosRecuperados || [];
 };
 
-gastosGet();
+cargarGastosEnLocal();
 
-// Arrow function: lectura de DB y agregando elementos al DOM. Y Suma el total de gastos
-const leerGastos = () => {
+// Renderiza la tabla en el DOM (UI) y calcula el total
+const actualizarInterfazGastos = () => {
   // Limpia el contenido actual de la tabla para evitar duplicados
-  $tabla.querySelector("tbody").innerHTML = "";
-  baseDeDatosInicial.forEach((el) => {
-    let $clon = d.importNode($plantilla, true);
-    $clon.querySelector(".nombre").textContent = el.nombre;
-    $clon.querySelector(".monto").textContent = el.cantidad;
-    $clon.querySelector(".btn-editar").dataset.id = el.id;
-    $clon.querySelector(".btn-eliminar").dataset.id = el.id;
-    $fragmento.appendChild($clon);
+  $tablaGastos.querySelector("tbody").innerHTML = "";
+  listaDeGastos.forEach((gasto) => {
+    let $clonFila = document.importNode($plantilla, true);
+    $clonFila.querySelector(".celda-nombre").textContent = gasto.nombre;
+    $clonFila.querySelector(".celda-monto").textContent = gasto.cantidad;
+    $clonFila.querySelector(".btn-editar").dataset.id = gasto.id;
+    $clonFila.querySelector(".btn-eliminar").dataset.id = gasto.id;
+    $fragmento.appendChild($clonFila);
   });
 
-  $tabla.querySelector("tbody").appendChild($fragmento);
+  $tablaGastos.querySelector("tbody").appendChild($fragmento);
 
-  // Suma el total de los gastos
-  $total.textContent = "";
-  const totalCalculado = baseDeDatosInicial.reduce((acumulador, el) => {
-    let numero = parseFloat(el.cantidad);
+  // Cálculo y renderizado del total
+  $contenedorTotal.textContent = "";
+  const sumaTotal = listaDeGastos.reduce((acumulador, gasto) => {
+    let numero = parseFloat(gasto.cantidad);
 
     acumulador += numero;
     return acumulador;
   }, 0);
-  $total.textContent = `Total de Gastos: ${formatoNumero.format(totalCalculado)}`;
+  $contenedorTotal.textContent = `Total de Gastos: ${formateadorMoneda.format(sumaTotal)}`;
 };
 
-// Arrow function: pase de elementos al formulario con su respectivo id para editar
-const editarGasto = (e) => {
+// Prepara el formulario para editar un gasto existente
+const prepararEdicionGasto = (e) => {
   if (e.target.matches(".btn-editar")) {
-    d.querySelector("h2").textContent = "Editar Gasto";
+    document.querySelector("h2").textContent = "Editar Gasto";
 
     // Obteniendo id del dataset que le pasmos al botón "Editar"
-    const ID = e.target.dataset.id;
+    const ID_SELECCIONADO = e.target.dataset.id;
 
-    baseDeDatosInicial.find((el) => {
-      if (el.id === Number(ID)) {
+    listaDeGastos.find((gastoEncontrado) => {
+      if (gastoEncontrado.id === Number(ID_SELECCIONADO)) {
         // .nombre, .monto, .id. No esta accediendo a la clase, esta obteniendo como referencia el atributo "name", para agregarle el valor
-        $form.nombre.value = el.nombre;
-        $form.monto.value = el.cantidad;
-        $form.id.value = el.id;
+        $formulario.nombre.value = gastoEncontrado.nombre;
+        $formulario.monto.value = gastoEncontrado.cantidad;
+        $formulario.id.value = gastoEncontrado.id;
       }
     });
   }
 };
 
-// Arrow function: elimina un elemento por medio del id
-const eliminarGasto = (e) => {
-  const ID = e.target.dataset.id;
+// Elimina un gasto de la lista
+const eliminarGastoDeLista = (e) => {
+  const ID_ELIMINAR = e.target.dataset.id;
   if (e.target.matches(".btn-eliminar")) {
-    baseDeDatosInicial = baseDeDatosInicial.filter((el) => {
-      if (el.id !== Number(ID)) {
-        return el;
+    listaDeGastos = listaDeGastos.filter((gasto) => {
+      if (gasto.id !== Number(ID_ELIMINAR)) {
+        return gasto;
       }
     });
-    gastosSet();
-    leerGastos();
+    guardarGastosEnLocal();
+    actualizarInterfazGastos();
   }
 };
 
-d.addEventListener("DOMContentLoaded", leerGastos);
+// --- Eventos de Usuario ---
 
-$form.addEventListener("submit", (e) => {
+document.addEventListener("DOMContentLoaded", actualizarInterfazGastos);
+
+$formulario.addEventListener("submit", (e) => {
   e.preventDefault();
-  const ID = e.target.elements.id.value;
+  const ID_ACTUAL = e.target.elements.id.value;
 
-  //Si el id oculto no tiene valor, vamos a crearGasto, de lo contrario editarGasto.
-  if (!ID) {
-    crearGasto();
-    gastosSet();
-    leerGastos();
+  //Si el id oculto no tiene valor, vamos a registrarGastoEnMemoria, de lo contrario prepararEdicionGasto.
+  if (!ID_ACTUAL) {
+    // Modo: Crear
+    registrarGastoEnMemoria();
+    guardarGastosEnLocal();
+    actualizarInterfazGastos();
   } else {
-    // Inmutabilidad al editar un elemento
-    const elementoAEditar = baseDeDatosInicial.map((el) =>
-      el.id === Number(ID)
+    // Modo: Editar (Inmutabilidad)
+    const elementoAEditar = listaDeGastos.map((gasto) =>
+      gasto.id === Number(ID_ACTUAL)
         ? {
-            ...el,
-            nombre: d.querySelector(".nombre").value,
-            cantidad: d.querySelector(".monto").value,
+            ...gasto,
+            nombre: document.querySelector(".nombre").value,
+            cantidad: document.querySelector(".monto").value,
           }
-        : el,
+        : gasto,
     );
-    baseDeDatosInicial = elementoAEditar;
-
-    gastosSet();
-    leerGastos();
-    $form.reset();
-    d.querySelector("h2").textContent = "Agregar Gasto";
-    $form.querySelector("input[name='id']").value = "";
+    listaDeGastos = elementoAEditar;
+    // Resetear visualmente el formulario
+    guardarGastosEnLocal();
+    actualizarInterfazGastos();
+    $formulario.reset();
+    document.querySelector("h2").textContent = "Agregar Gasto";
+    $formulario.querySelector("input[name='id']").value = "";
   }
 });
 
-d.addEventListener("click", (e) => {
-  editarGasto(e);
-  eliminarGasto(e);
+document.addEventListener("click", (e) => {
+  prepararEdicionGasto(e);
+  eliminarGastoDeLista(e);
 });
