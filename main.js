@@ -42,7 +42,8 @@ const actualizarInterfazGastos = () => {
   listaDeGastos.forEach((gasto) => {
     let $clonFila = document.importNode($plantilla, true);
     $clonFila.querySelector(".celda-nombre").textContent = gasto.nombre;
-    $clonFila.querySelector(".celda-monto").textContent = gasto.cantidad;
+    $clonFila.querySelector(".celda-monto").textContent =
+      formateadorMoneda.format(gasto.cantidad);
     $clonFila.querySelector(".btn-editar").dataset.id = gasto.id;
     $clonFila.querySelector(".btn-eliminar").dataset.id = gasto.id;
     $fragmento.appendChild($clonFila);
