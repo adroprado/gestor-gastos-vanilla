@@ -29,13 +29,11 @@ const registrarGastoEnMemoria = () => {
 const guardarGastosEnLocal = () =>
   ls.setItem("gastos", JSON.stringify(listaDeGastos));
 
-// Recupera los datos guardados al cargar la página
+// Recupera los datos guardados del almacenamiento del navegador
 const cargarGastosEnLocal = () => {
   let datosRecuperados = JSON.parse(ls.getItem("gastos"));
   listaDeGastos = datosRecuperados || [];
 };
-
-cargarGastosEnLocal();
 
 // Renderiza la tabla en el DOM (UI) y calcula el total
 const actualizarInterfazGastos = () => {
@@ -53,12 +51,8 @@ const actualizarInterfazGastos = () => {
   $tablaGastos.querySelector("tbody").appendChild($fragmento);
 
   // Cálculo y renderizado del total
-  $contenedorTotal.textContent = "";
   const sumaTotal = listaDeGastos.reduce((acumulador, gasto) => {
-    let numero = parseFloat(gasto.cantidad);
-
-    acumulador += numero;
-    return acumulador;
+    return (acumulador += parseFloat(gasto.cantidad));
   }, 0);
   $contenedorTotal.textContent = `Total de Gastos: ${formateadorMoneda.format(sumaTotal)}`;
 };
@@ -69,10 +63,10 @@ const prepararEdicionGasto = (e) => {
     document.querySelector("h2").textContent = "Editar Gasto";
 
     // Obteniendo id del dataset que le pasmos al botón "Editar"
-    const ID_SELECCIONADO = e.target.dataset.id;
+    const ID_SELECCIONADO = Number(e.target.dataset.id);
 
     listaDeGastos.find((gastoEncontrado) => {
-      if (gastoEncontrado.id === Number(ID_SELECCIONADO)) {
+      if (gastoEncontrado.id === ID_SELECCIONADO) {
         // .nombre, .monto, .id. No esta accediendo a la clase, esta obteniendo como referencia el atributo "name", para agregarle el valor
         $formulario.nombre.value = gastoEncontrado.nombre;
         $formulario.monto.value = gastoEncontrado.cantidad;
@@ -84,10 +78,10 @@ const prepararEdicionGasto = (e) => {
 
 // Elimina un gasto de la lista
 const eliminarGastoDeLista = (e) => {
-  const ID_ELIMINAR = e.target.dataset.id;
+  const ID_ELIMINAR = Number(e.target.dataset.id);
   if (e.target.matches(".btn-eliminar")) {
     listaDeGastos = listaDeGastos.filter((gasto) => {
-      if (gasto.id !== Number(ID_ELIMINAR)) {
+      if (gasto.id !== ID_ELIMINAR) {
         return gasto;
       }
     });
@@ -98,11 +92,16 @@ const eliminarGastoDeLista = (e) => {
 
 // --- Eventos de Usuario ---
 
-document.addEventListener("DOMContentLoaded", actualizarInterfazGastos);
+document.addEventListener(
+  "DOMContentLoaded",
+  actualizarInterfazGastos,
+  cargarGastosEnLocal(),
+);
 
 $formulario.addEventListener("submit", (e) => {
   e.preventDefault();
-  const ID_ACTUAL = e.target.elements.id.value;
+  // const ID_ACTUAL = e.target.elements.id.value;
+  const ID_ACTUAL = Number(e.target.elements.id.value);
 
   //Si el id oculto no tiene valor, vamos a registrarGastoEnMemoria, de lo contrario prepararEdicionGasto.
   if (!ID_ACTUAL) {
@@ -113,7 +112,7 @@ $formulario.addEventListener("submit", (e) => {
   } else {
     // Modo: Editar (Inmutabilidad)
     const elementoAEditar = listaDeGastos.map((gasto) =>
-      gasto.id === Number(ID_ACTUAL)
+      gasto.id === ID_ACTUAL
         ? {
             ...gasto,
             nombre: document.querySelector(".nombre").value,
