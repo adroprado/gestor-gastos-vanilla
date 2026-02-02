@@ -1,2 +1,13 @@
-.vscode settings.json
+# Editor (VS Code)
+.vscode/
 
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs y archivos temporales
+*.log
+.eslintcache
+
+# Si llegas a usar extensiones como Live Server, a veces crean temporales
+.history/
