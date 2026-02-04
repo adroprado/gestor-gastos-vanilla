@@ -1,7 +1,6 @@
 /* *** Variables *** */
 :root {
   --maxWidth-contenedor: 1200px;
-  --fontSize: 16px;
   --color-h1: #1f2937;
   --color-p: #6b7280;
 }
@@ -9,7 +8,7 @@
 /* *** Reseteo inicial CSS *** */
 html {
   box-sizing: border-box;
-  font-size: var(--fontSize);
+  font-size: 16px;
 }
 
 *,
@@ -18,52 +17,54 @@ html {
   box-sizing: inherit;
 }
 
+/* añadir fuente */
 body {
+  border: thin solid red;
+  font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
   background: linear-gradient(135deg, #e0f2fe 0%, #ffffff 50%, #fae8ff 100%);
   margin: 0;
-  min-height: 100vh;
-  /* añadir fuente */
+  /* min-height: 100vh; */
+  padding: 2rem 1rem;
 }
 
 /* *** Estilos del sitio *** */
-
-/* añadir colores de fondo */
-.contenedor {
+.contenedor-principal {
   border: thin solid red;
-  max-width: var(--maxWidth-contenedor);
-  padding: 1rem 0.5rem;
+  max-width: var(--maxWidth-contenedor-principal);
+  /*margin: 0 auto;*/
 }
 
 .encabezado {
   border: thin solid blue;
+  text-align: center;
+  /* margin-bottom: 2rem; */
 }
 
 .encabezado > h1 {
   color: var(--color-h1);
-  /*añadir fuente */
-  margin: 0 0 0.5rem 0;
-  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  /* margin: 0 0 0.5rem 0; */
 }
 
 .encabezado > p {
   color: var(--color-p);
   font-size: 1.1rem;
-  margin-bottom: 2rem;
-  text-align: center;
 }
 
 .navegacion {
   border: thin solid purple;
   background: #fff;
   border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
   padding: 0.5rem;
+  /*margin-bottom: 1.5rem;*/
 }
 
-.btn-nav {
+.navegacion > button {
   background: transparent;
   border: none;
   border-radius: 0.5rem;
@@ -72,16 +73,15 @@ body {
   font-size: 1rem;
   font-weight: 600;
   padding: 0.75rem 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
-/* PROGRAMAR - Cuando el usuario usuario presiona el botón, se tiene que agregar la clase is-active */
-.btn-nav.is-active {
-  background-color: #3b82f6;
-  color: #fff;
+.navegacion > button:hover {
+  background-color: #f3f4f6;
 }
 
-.btn-nav:hover {
-  background-color: #f3f4f6;
+/* PROGRAMAR - Cuando el usuario usuario presiona el botón, se tiene que agregar la clase is-active */
+.navegacion > button.is-active {
+  background-color: #3b82f6;
+  color: #fff;
 }
