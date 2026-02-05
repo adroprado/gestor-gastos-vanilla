@@ -28,12 +28,14 @@ body {
 }
 
 /* *** Estilos del sitio *** */
+/* MAIN */
 .contenedor-principal {
   border: thin solid red;
   max-width: var(--maxWidth-contenedor-principal);
   /*margin: 0 auto;*/
 }
 
+/* HEADER */
 .encabezado {
   border: thin solid blue;
   text-align: center;
@@ -52,6 +54,7 @@ body {
   font-size: 1.1rem;
 }
 
+/* NAV */
 .navegacion {
   border: thin solid purple;
   background: #fff;
@@ -76,12 +79,34 @@ body {
   transition: all 0.3s ease;
 }
 
+/* CLASE PARA LÓGICA DE BOTONES DE MENU DE NAVEGACION*/
+
 .navegacion > button:hover {
   background-color: #f3f4f6;
 }
 
-/* PROGRAMAR - Cuando el usuario usuario presiona el botón, se tiene que agregar la clase is-active */
-.navegacion > button.is-active {
+.navegacion > button.activo {
   background-color: #3b82f6;
   color: #fff;
+}
+
+/* CLASE PARA LÓGICA DE TABLAS DE GASTOS Y ESTADÍSTICAS */
+.tablas-nav {
+  display: none;
+}
+
+.tablas-nav.activo {
+  display: block;
+  animation: desvanecimiento 0.3s ease;
+}
+
+@keyframes desvanecimiento {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
