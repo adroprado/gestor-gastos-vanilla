@@ -15,15 +15,13 @@
       </header>
 
       <!-- BARRA DE NAVEGACIÓN -->
-      <!-- Lógica: programar botones -->
       <nav class="navegacion">
-        <button class="btn-nav-gastos">Gastos</button>
+        <button class="btn-nav-gastos activo">Gastos</button>
         <button class="btn-nav-estadisticas">Estadísticas</button>
       </nav>
 
       <!-- TABLA DE GASTOS -->
-      <!-- Lógica: si el usuario presiona el botón de gastos (nav), mostrar esta tabla. Gastos inicia por defecto  -->
-      <section class="contenedor-tablas">
+      <section class="contenedor-gastos tablas-nav activo">
         <article class="contenedor-formulario">
           <h2>Agregar Nuevo Gasto</h2>
           <!-- Posible programación / css etiqueta p -->
@@ -100,8 +98,7 @@
       </section>
 
       <!-- TABLA DE ESTADÍSTICAS -->
-      <!-- Lógica: si el usuario presiona el botón de estadísticas (nav), mostrar esta tabla  -->
-      <section class="contenedor-estadisticas">
+      <section class="contenedor-estadisticas tablas-nav">
         <article class="estadisticas">
           <h2>Gastos Mensuales</h2>
           <!-- Lógica: colocar los valores totales de cada tarjeta -->
