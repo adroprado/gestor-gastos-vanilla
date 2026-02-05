@@ -1,14 +1,12 @@
 // --- Importación de Módulos ---
-import {
-  registrarGastoEnMemoria,
-  actualizarInterfazGastos,
-  cargarGastosEnLocal,
-} from "./js/formulario.js";
+import menuNavegacion from './js/menu-navegacion.js';
 
 // --- Ejecución de Código ---
-(registrarGastoEnMemoria(),
-  document.addEventListener(
-    "DOMContentLoaded",
-    actualizarInterfazGastos,
-    cargarGastosEnLocal(),
-  ));
+document.addEventListener('DOMContentLoaded', (e) => {
+  menuNavegacion(
+    '.btn-nav-gastos',
+    '.btn-nav-estadisticas',
+    '.contenedor-gastos ',
+    '.contenedor-estadisticas',
+  );
+});
